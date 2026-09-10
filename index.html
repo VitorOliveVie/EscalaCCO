@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escala CCO</title>
+<style>
+:root{
+ --bg:#f4f6f8;--card:#fff;--text:#17202a;--muted:#667085;--line:#e4e7ec;
+ --p:#146c43;--pbg:#dff5e8;--ho:#2457a6;--hobg:#e6efff;--accent:#4f46e5;
+ --warn:#8a4b08;--warnbg:#fff3d6;--holiday:#7b3fa0;--holidaybg:#f2e8f8;
+ --danger:#b42318;--dangerbg:#fef3f2;--shadow:0 1px 3px rgba(16,24,40,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",Arial,sans-serif}
+.app{max-width:1500px;margin:auto;padding:22px}
+.hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
+.hero h1{font-size:30px;margin:0 0 4px;letter-spacing:-.03em}.hero p{margin:0;color:var(--muted)}
+.notice{background:var(--warnbg);color:var(--warn);border:1px solid #f2d39c;border-radius:10px;padding:10px 12px;font-weight:600}
+.controls{display:grid;grid-template-columns:minmax(230px,1.5fr) repeat(2,minmax(150px,.7fr));gap:10px;background:var(--card);padding:12px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px}
+input,select,button{font:inherit} input,select{width:100%;height:42px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;padding:0 11px;color:var(--text)}
+input:focus,select:focus,button:focus{outline:2px solid #c7d7fe;outline-offset:1px}
+.weeknav{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:#fff;padding:12px 14px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:14px}
+.navbtn,.btn{min-height:42px;border:1px solid #d0d5dd;background:#fff;border-radius:9px;padding:0 14px;cursor:pointer;font-weight:700;color:#344054}
+.btn.primary{background:#111827;color:#fff;border-color:#111827}.btn.danger{color:var(--danger);border-color:#f1b8b3;background:#fff}.btn.soft{background:#f8fafc}
+.weektitle{text-align:center}.weektitle strong{display:block;font-size:17px}.weektitle span{font-size:12px;color:var(--muted)}
+.todaybtn{border:0;background:transparent;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 8px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+.kpi .label{font-size:12px;text-transform:uppercase;font-weight:700;color:var(--muted)}.kpi .value{font-size:26px;font-weight:750;margin-top:4px}.kpi .sub{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:650}.tab.active{background:#111827;color:#fff;border-color:#111827}
+.tab.manage{margin-left:auto}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);margin:2px 0 10px}.dot{width:10px;height:10px;border-radius:99px;display:inline-block;margin-right:5px}.dot.p{background:var(--p)}.dot.ho{background:var(--ho)}.dot.f{background:var(--holiday)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}.panel-head h2{font-size:16px;margin:0}.hint{font-size:12px;color:var(--muted)}
+.table-wrap,.group-wrap{overflow:auto;max-height:720px}table{border-collapse:separate;border-spacing:0;width:100%;min-width:870px}th,td{border-bottom:1px solid #eef0f2;border-right:1px solid #f0f1f3;padding:9px 7px;text-align:center;white-space:nowrap}
+thead th{position:sticky;top:0;z-index:5;background:#f8fafc;font-size:12px;color:#475467}.namecol{position:sticky;left:0;z-index:4;text-align:left;background:#fff;min-width:245px;max-width:245px}thead .namecol{z-index:7;background:#f8fafc}.teamcol{position:sticky;left:245px;z-index:4;background:#fff;min-width:64px}thead .teamcol{z-index:7;background:#f8fafc}.rolecol{text-align:left;min-width:145px}.day{min-width:94px}.currentday{box-shadow:inset 0 0 0 2px #49b675}
+.status{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:30px;border-radius:8px;font-weight:800}.status.P{color:var(--p);background:var(--pbg)}.status.HO{color:var(--ho);background:var(--hobg)}.status.F{color:var(--holiday);background:var(--holidaybg);min-width:66px}
+.holiday-name{display:block;margin-top:4px;color:var(--holiday);font-size:10px;line-height:1.2;white-space:normal;max-width:88px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:14px}.daycard{border:1px solid var(--line);border-radius:12px;padding:14px}.daycard h3{margin:0 0 10px}.daystats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.chip{border-radius:99px;padding:5px 9px;font-size:12px;font-weight:700}.chip.p{background:var(--pbg);color:var(--p)}.chip.ho{background:var(--hobg);color:var(--ho)}
+.names{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.person{padding:7px 8px;border-radius:8px;background:#f8fafc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me-card{padding:16px}.me-title{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px}.me-title h2{margin:0;font-size:18px}.me-title p{margin:3px 0 0;color:var(--muted)}.weeks{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.week{border:1px solid var(--line);border-radius:12px;overflow:hidden}.week h3{margin:0;padding:10px 12px;background:#f8fafc;font-size:13px}.weekdays{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line)}.wday{background:#fff;padding:10px 5px;text-align:center}.wday b{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
+.group-table{min-width:760px}.group-table th,.group-table td{padding:13px 12px}.group-table .dow{text-align:left;font-weight:750;min-width:150px}.group-table .daynum{width:72px;font-weight:800;font-size:15px}.group-table .cycle-current{background:#f5f7ff;box-shadow:inset 0 3px 0 var(--accent)}.group-table .cycle-next{background:#eef0f3}.group-table thead .cycle-next{background:#e4e7ec;box-shadow:inset 0 3px 0 #98a2b3}
+.cycle-label{display:inline-flex;align-items:center;margin-left:7px;padding:2px 6px;border-radius:99px;background:#e4e7ec;color:#475467;font-size:10px;font-weight:800}.group-table .today-dow,.group-table .today-daynum{background:#ecfdf3;color:#11643b}.group-table .today-daynum{box-shadow:inset 0 0 0 2px #78d89b}.group-month{display:inline-flex;margin-left:10px;padding:5px 9px;border-radius:8px;background:#eef2f6;color:#344054;font-size:12px;font-weight:800}.group-badges{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.group-badge{padding:6px 9px;border-radius:8px;background:#eef2f6;color:#25324b;font-weight:800}.group-note{padding:12px 16px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);background:#fcfcfd}
+.empty{padding:34px;text-align:center;color:var(--muted)}.holidaycard{padding:28px;text-align:center;color:var(--holiday);background:var(--holidaybg)}
+/* Gestão */
+.loginbox{max-width:430px;margin:30px auto;padding:22px;border:1px solid var(--line);border-radius:14px;background:#fff}.loginbox h2{margin:0 0 6px}.loginbox p{color:var(--muted);margin:0 0 16px}.field{margin-bottom:12px}.field label{display:block;font-weight:700;margin-bottom:5px}.msg{margin-top:10px;font-size:12px}.msg.error{color:var(--danger)}.msg.ok{color:var(--p)}
+.admin{padding:16px}.adminbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.adminbar h2{margin:0}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-searchbar{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:8px;align-items:end;margin-bottom:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.admin-searchbar .field{margin:0}.admin-searchbar .hint{margin-top:4px}.admin-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:14px}.admin-card{border:1px solid var(--line);border-radius:12px;overflow:hidden}.admin-card h3{margin:0;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:14px}.admin-body{padding:14px}.rowform{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:12px}.rowform.emp{grid-template-columns:1.2fr 1fr .65fr auto}.mini-list{display:grid;gap:7px}.mini-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 10px;background:#f8fafc;border-radius:9px}.mini-item strong{overflow:hidden;text-overflow:ellipsis}.smallbtn{border:1px solid #d0d5dd;background:#fff;border-radius:7px;padding:6px 9px;cursor:pointer;font-weight:700}.smallbtn.danger{color:var(--danger)}
+.schedule-editor{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.editor-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line)}.editor-head h3{margin:0}.editor-toolbar{display:flex;gap:8px;flex-wrap:wrap}.edit-scroll{overflow:auto}.edit-table{min-width:820px}.edit-table td,.edit-table th{padding:8px}.toggle{border:0;border-radius:8px;min-width:50px;height:32px;font-weight:800;cursor:pointer}.toggle.P{background:var(--pbg);color:var(--p)}.toggle.HO{background:var(--hobg);color:var(--ho)}
+.security-note{margin-top:14px;padding:12px;border-radius:10px;background:var(--warnbg);color:var(--warn);font-size:12px}.footer{color:var(--muted);font-size:12px;margin-top:10px;text-align:right}
+
+.mobile-quick{display:none}
+.mobile-result{display:none}
+@media(max-width:700px){
+ .mobile-quick{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+ .mobile-quick h2{margin:0 0 4px;font-size:18px}
+ .mobile-quick p{margin:0 0 10px;color:var(--muted);font-size:12px}
+ .mobile-quick input{height:48px;font-size:16px;border:2px solid #b8c4d6}
+ .mobile-suggestions{display:grid;gap:6px;margin-top:8px;max-height:220px;overflow:auto}
+ .mobile-suggestion{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px;text-align:left;cursor:pointer}
+ .mobile-suggestion strong{display:block;font-size:14px}
+ .mobile-suggestion span{font-size:12px;color:var(--muted)}
+ .mobile-result{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+ .mobile-result-head{padding:13px 14px;background:#f8fafc;border-bottom:1px solid var(--line)}
+ .mobile-result-head h3{margin:0;font-size:16px}
+ .mobile-result-head p{margin:3px 0 0;color:var(--muted);font-size:12px}
+ .mobile-person-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+ .mobile-person-info{min-width:0;flex:1}.mobile-person-info h3{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .mobile-week-nav{display:flex;gap:6px;flex:0 0 auto}
+ .mobile-week-btn{width:40px;height:38px;border:1px solid #cfd6df;background:#fff;border-radius:9px;color:#344054;font-size:25px;line-height:1;cursor:pointer;font-weight:700}
+ .mobile-current-week-btn{margin-top:10px;border:0;background:transparent;color:#2563eb;font-size:12px;font-weight:700;padding:2px 0;cursor:pointer}
+ .mobile-current-week-btn:disabled{color:#98a2b3;cursor:default}
+ .mobile-week-grid{display:grid;grid-template-columns:1fr;gap:8px;padding:12px}
+ .mobile-day{display:grid;grid-template-columns:86px 1fr auto;align-items:center;gap:8px;padding:10px 11px;border:1px solid var(--line);border-radius:10px}
+ .mobile-day.today{border:2px solid #49b675;background:#f2fbf5}
+ .mobile-day .date{font-size:12px;color:var(--muted)}
+ .mobile-day .dow{font-weight:800}
+ .mobile-day .status{min-width:58px}
+ #publicTools{display:none}
+ #gridView,#todayView,#personView,#groupsView{margin-top:0}
+ .tabs{overflow:auto;flex-wrap:nowrap;padding-bottom:2px}
+ .tab{white-space:nowrap}
+}
+
+@media(max-width:900px){.app{padding:12px}.hero{display:block}.notice{margin-top:10px}.controls{grid-template-columns:1fr 1fr}.controls input{grid-column:1/-1}.kpis{grid-template-columns:1fr 1fr}.cards,.admin-grid{grid-template-columns:1fr}.namecol{min-width:190px;max-width:190px}.teamcol{left:190px}.tab.manage{margin-left:0}.rowform,.rowform.emp{grid-template-columns:1fr}}
+@media(max-width:560px){.controls,.kpis{grid-template-columns:1fr}.controls input{grid-column:auto}.weeknav{grid-template-columns:1fr 1fr}.weektitle{grid-column:1/-1;grid-row:1;text-align:left}.rolecol{display:none}.names,.weeks{grid-template-columns:1fr}.namecol{min-width:170px;max-width:170px}.teamcol{left:170px}}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="hero"><div><h1>Escala CCO</h1><p>Consulta automática por semana, grupos e colaboradores.</p></div></div>
+ <section class="mobile-quick" id="mobileQuick">
+  <h2>Consultar minha escala</h2>
+  <p>Digite seu nome para ver rapidamente sua escala desta semana.</p>
+  <input id="mobileEmployeeSearch" type="search" placeholder="Pesquisar funcionário…" autocomplete="off">
+  <div id="mobileSuggestions" class="mobile-suggestions"></div>
+ </section>
+ <section class="mobile-result" id="mobileResult" hidden>
+  <div class="mobile-result-head">
+   <div class="mobile-person-nav">
+    <div class="mobile-person-info"><h3 id="mobileEmployeeName">Escala da semana</h3><p id="mobileEmployeeMeta"></p></div>
+    <div class="mobile-week-nav">
+     <button type="button" class="mobile-week-btn" id="mobilePrevWeek" aria-label="Semana anterior">‹</button>
+     <button type="button" class="mobile-week-btn" id="mobileNextWeek" aria-label="Próxima semana">›</button>
+    </div>
+   </div>
+   <button type="button" class="mobile-current-week-btn" id="mobileCurrentWeek">Voltar para a semana atual</button>
+  </div>
+  <div id="mobileWeekGrid" class="mobile-week-grid"></div>
+ </section>
+ <div id="publicTools">
+  <div class="controls">
+   <input id="search" type="search" placeholder="Buscar colaborador ou função…">
+   <select id="team"></select>
+   <select id="dayFilter"><option value="all">Mostrar P e HO</option><option value="P">Mostrar somente presencial</option><option value="HO">Mostrar somente home office</option></select>
+  </div>
+  <div class="weeknav">
+   <button class="navbtn" id="prevWeek">← Semana anterior</button>
+   <div class="weektitle"><strong id="weekTitle">Semana atual</strong><span id="weekRange"></span><br><button class="todaybtn" id="currentWeek">Voltar para a semana atual</button></div>
+   <button class="navbtn" id="nextWeek">Próxima semana →</button>
+  </div>
+  <div class="kpis">
+   <div class="kpi"><div class="label">Colaboradores</div><div class="value" id="kPeople">–</div><div class="sub">na seleção atual</div></div>
+   <div class="kpi"><div class="label">Presenciais hoje</div><div class="value" id="kP">–</div><div class="sub" id="kPSub"></div></div>
+   <div class="kpi"><div class="label">Home office hoje</div><div class="value" id="kHO">–</div><div class="sub" id="kHOSub"></div></div>
+   <div class="kpi"><div class="label">Equipe em foco</div><div class="value" id="kTeam">Todas</div><div class="sub">use o filtro acima</div></div>
+  </div>
+ </div>
+ <div class="tabs">
+  <button class="tab active" data-view="grid">Escala da semana</button>
+  <button class="tab" data-view="today">Quem está hoje</button>
+  <button class="tab" data-view="person">Minha escala</button>
+  <button class="tab" data-view="groups">Visão por grupos</button>
+  <button class="tab" data-view="info">Informações</button>
+  <button class="tab manage" data-view="manage">Gestão</button>
+ </div>
+ <div class="legend" id="legend"><span><i class="dot p"></i>Presencial (P)</span><span><i class="dot ho"></i>Home office (HO)</span><span><i class="dot f"></i>Feriado nacional</span></div>
+
+ <section class="panel view" id="gridView"><div class="panel-head"><h2 id="gridHeading">Escala da semana</h2><div class="hint">A página abre na semana atual.</div></div><div class="table-wrap"><table id="scheduleTable"></table></div></section>
+ <section class="panel view" id="todayView" hidden><div class="panel-head"><h2 id="todayTitle">Presença do dia</h2><div class="hint">Resumo por grupo.</div></div><div id="todayContent"></div></section>
+ <section class="panel view" id="personView" hidden><div class="me-card"><div class="me-title"><div><h2>Minha escala</h2><p>Selecione um colaborador.</p></div><select id="personSelect" style="max-width:360px"></select></div><div id="personSchedule" class="empty">Selecione um colaborador.</div></div></section>
+ <section class="panel view" id="groupsView" hidden><div class="panel-head"><h2>Grupos presenciais por semana do ciclo <span class="group-month" id="groupMonth"></span></h2><div class="hint" id="groupsHint"></div></div><div class="group-wrap"><table class="group-table" id="groupsTable"></table></div><div class="group-note">A semana selecionada fica em azul. Quando a pesquisa está na semana atual, a próxima semana aparece em cinza com a indicação <strong>PRÓXIMA</strong>.</div></section>
+
+ <section class="panel view" id="infoView" hidden>
+  <div class="panel-head"><h2>Informações da Escala CCO</h2><div class="hint">Regras de funcionamento e consulta.</div></div>
+  <div style="padding:18px">
+   <div class="admin-card">
+    <div class="admin-body" style="line-height:1.6">
+     <ol style="margin:0;padding-left:22px;display:grid;gap:12px">
+      <li><strong>Status:</strong> P = Presencial, HO = Home Office e F = Feriado. Finais de semana não fazem parte da escala normal.</li>
+      <li><strong>Feriados nacionais:</strong> os feriados configurados não contam como P ou HO, e o ciclo continua considerando apenas os dias úteis.</li>
+      <li><strong>Semana automática:</strong> de segunda a sexta, o sistema considera a semana atual. Aos sábados e domingos, passa a considerar a próxima semana de trabalho.</li>
+      <li><strong>Navegação:</strong> é possível consultar a semana anterior e a próxima. No celular, use os botões ‹ e › ao lado do funcionário selecionado.</li>
+      <li><strong>Consulta pelo celular:</strong> em “Consultar minha escala”, pesquise seu nome para visualizar imediatamente a escala da semana.</li>
+      <li><strong>Visualização mobile:</strong> mostra nome, função, grupo, período da semana e o status de cada dia. O dia atual recebe destaque.</li>
+      <li><strong>Consulta no computador:</strong> permite pesquisar por funcionário ou função, filtrar por equipe e P/HO, navegar entre semanas e acompanhar os indicadores.</li>
+      <li><strong>Visão por grupos:</strong> mostra quais grupos estarão presenciais em cada dia das quatro semanas do ciclo. Quando houver mais de um, todos aparecem na mesma célula.</li>
+      <li><strong>Indicação do ciclo:</strong> a semana selecionada fica em azul. Se for a semana atual, a próxima aparece em cinza com a indicação “PRÓXIMA”.</li>
+      <li><strong>Datas na Visão por Grupos:</strong> os dias acompanham as datas reais da semana consultada, com mês e ano atualizados automaticamente.</li>
+      <li><strong>Destaque de hoje:</strong> quando o dia atual estiver na semana exibida, ele recebe destaque visual.</li>
+      <li><strong>Gestão:</strong> área separada destinada à administração da escala.</li>
+     </ol>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="panel view" id="manageView" hidden>
+  <div id="loginArea" class="loginbox">
+   <h2>Acesso à Gestão</h2><p>Área restrita para manutenção da escala.</p>
+   <form id="loginForm">
+    <div class="field"><label for="adminLogin">Login</label><input id="adminLogin" autocomplete="username"></div>
+    <div class="field"><label for="adminPass">Senha</label><input id="adminPass" type="password" autocomplete="current-password"></div>
+    <button class="btn primary" type="submit" style="width:100%">Entrar</button>
+    <div id="loginMsg" class="msg"></div>
+   </form>
+   <div class="security-note"><strong>Aviso:</strong> no GitHub Pages esta proteção é apenas uma barreira de acesso na interface. Não equivale a autenticação segura de servidor. Guarde as credenciais em local seguro antes de publicar uma nova versão.</div>
+  </div>
+
+  <div id="adminArea" class="admin" hidden>
+   <div class="adminbar"><div><h2>Gestão da Escala CCO</h2><div class="hint">Rascunho salvo neste navegador.</div></div><div class="admin-actions"><button class="btn primary" id="backPublicBtn">← Voltar para página pública</button><button class="btn soft" id="exportBtn">Salvar backup</button><label class="btn soft" for="importFile" style="display:inline-flex;align-items:center">Importar backup</label><input id="importFile" type="file" accept="application/json" hidden><button class="btn danger" id="resetBtn">Restaurar padrão</button><button class="btn" id="logoutBtn">Sair</button></div></div>
+   <div class="admin-searchbar">
+    <div class="field">
+      <label for="adminSearch">Pesquisa rápida na Gestão</label>
+      <input id="adminSearch" type="search" placeholder="Digite grupo, funcionário ou função…">
+      <div class="hint">Filtra simultaneamente a lista de grupos e a lista de funcionários.</div>
+    </div>
+    <button class="btn soft" id="clearAdminSearch" type="button">Limpar pesquisa</button>
+   </div>
+
+   <div class="admin-grid">
+    <div class="admin-card"><h3>Grupos</h3><div class="admin-body">
+     <form id="groupForm" class="rowform"><div class="field" style="margin:0"><label>Novo grupo</label><input id="newGroup" placeholder="Ex.: T5"></div><div></div><button class="btn primary" type="submit">Adicionar</button></form>
+     <div id="groupList" class="mini-list"></div>
+    </div></div>
+    <div class="admin-card"><h3>Funcionários</h3><div class="admin-body">
+     <form id="employeeForm" class="rowform emp">
+      <div class="field" style="margin:0"><label>Nome</label><input id="empName" required></div>
+      <div class="field" style="margin:0"><label>Função</label><input id="empRole" required></div>
+      <div class="field" style="margin:0"><label>Grupo</label><select id="empTeam"></select></div>
+      <button class="btn primary" type="submit">Adicionar</button>
+     </form>
+     <div id="employeeList" class="mini-list" style="max-height:330px;overflow:auto"></div>
+    </div></div>
+   </div>
+
+   <div class="admin-card" style="margin-top:14px">
+    <h3>Acesso da Gestão</h3>
+    <div class="admin-body">
+     <form id="credentialForm" class="rowform emp">
+      <div class="field" style="margin:0"><label>Novo login</label><input id="newAdminLogin" autocomplete="off" required></div>
+      <div class="field" style="margin:0"><label>Nova senha</label><input id="newAdminPass" type="password" autocomplete="new-password" placeholder="Deixe em branco para manter a atual"></div>
+      <div class="field" style="margin:0"><label>Confirmar senha</label><input id="confirmAdminPass" type="password" autocomplete="new-password"></div>
+      <button class="btn primary" type="submit">Salvar acesso e baixar versão</button>
+     </form>
+     <div class="hint">Ao salvar, será baixado automaticamente um novo <strong>index.html</strong> com o novo login/senha e todas as alterações atuais da escala. Depois, substitua o arquivo no GitHub.</div>
+     <div id="credentialMsg" class="msg"></div>
+    </div>
+   </div>
+
+   <div class="schedule-editor">
+    <div class="editor-head"><div><h3>Escala dos grupos — ciclo de 4 semanas</h3><div class="hint">Clique em P/HO para alterar manualmente. O sorteio gera 3 dias presenciais por semana para cada grupo. “Gerar versão para publicar” baixa um index.html atualizado para substituir o arquivo publicado no GitHub.</div></div><div class="editor-toolbar"><button class="btn soft" id="randomBtn">Sortear novas escalas</button><button class="btn primary" id="saveBtn">Salvar rascunho</button><button class="btn primary" id="saveVersionBtn">Gerar versão para publicar</button></div></div>
+    <div class="edit-scroll"><table class="edit-table" id="editScheduleTable"></table></div>
+   </div>
+   <div id="adminMsg" class="msg"></div>
+  </div>
+ </section>
+ <div class="footer">Escala CCO • ciclo contínuo de 4 semanas</div>
+</div>
+
+<script>
+const DEFAULT_CONFIG={"groups": [{"id": "T1", "schedule": ["HO", "HO", "P", "P", "P", "P", "HO", "HO", "P", "P", "P", "P", "P", "HO", "HO", "P", "P", "HO", "HO", "P"]}, {"id": "T2", "schedule": ["P", "P", "HO", "HO", "P", "P", "P", "P", "HO", "HO", "P", "HO", "HO", "P", "P", "HO", "HO", "P", "P", "P"]}, {"id": "T3", "schedule": ["HO", "HO", "P", "P", "P", "P", "HO", "HO", "P", "P", "P", "P", "P", "HO", "HO", "P", "P", "HO", "HO", "P"]}, {"id": "T4", "schedule": ["P", "P", "HO", "HO", "P", "P", "P", "P", "HO", "HO", "P", "HO", "HO", "P", "P", "HO", "HO", "P", "P", "P"]}], "employees": [{"team": "T1", "role": "Troca Prematura", "name": "Amanda Bianchi Campos de Godoi"}, {"team": "T1", "role": "Supervisão", "name": "Ruan Dias Sales"}, {"team": "T1", "role": "Papel", "name": "Julia Magalhaes do Nascimento"}, {"team": "T1", "role": "Back-Office", "name": "Taynara Mendonca dos Santos"}, {"team": "T1", "role": "Suprimentos", "name": "Gerson Nunes Ribeiro"}, {"team": "T1", "role": "Monitoramento", "name": "Davi de Freitas Nogueira"}, {"team": "T1", "role": "Bilhetagem", "name": "RUTHY"}, {"team": "T1", "role": "Back-Office", "name": "VICTOR MIRANDA PONTE"}, {"team": "T2", "role": "Supervisão", "name": "Anderson Nascimento Rodrigues"}, {"team": "T2", "role": "Suprimentos", "name": "Kelly Oliveira Alves"}, {"team": "T2", "role": "Monitoramento", "name": "Gustavo de Sousa Procopio"}, {"team": "T2", "role": "Back-Office", "name": "Janilson Junior Raspante"}, {"team": "T2", "role": "Papel", "name": "Andre Luiz Pereira dos Santos Junior"}, {"team": "T2", "role": "Monitoramento", "name": "KEVIN LUCAS DE SOUZA COSTA"}, {"team": "T2", "role": "Bilhetagem", "name": "Marcos Vinicius Silva Barbosa"}, {"team": "T2", "role": "Back-Office", "name": "RYAN SOTI"}, {"team": "T3", "role": "Monitoramento", "name": "Jefferson Rocha De Souza"}, {"team": "T3", "role": "Bilhetagem", "name": "Kaio Pereira Silva"}, {"team": "T3", "role": "Suprimentos", "name": "Catarina Ribeiro de Araujo"}, {"team": "T3", "role": "Monitoramento", "name": "LAERCIO CUNHA BARBOSA"}, {"team": "T3", "role": "Papel", "name": "Marcus Vinicius Teixeira da Cunha"}, {"team": "T3", "role": "Back-Office", "name": "Rebeca Rodrigues Martins"}, {"team": "T3", "role": "Supervisão", "name": "Ruan Dias Sales"}, {"team": "T4", "role": "Monitoramento", "name": "DIEGO CUNHA DA SILVA"}, {"team": "T4", "role": "Monitoramento", "name": "Lailson De Sousa Lima"}, {"team": "T4", "role": "Suprimentos", "name": "Lorrane Sthefanne Lins Vieira"}, {"team": "T4", "role": "Troca Prematura", "name": "Margarida de Nazare De Lima Alexandre"}, {"team": "T4", "role": "Papel", "name": "Maria Eduarda"}, {"team": "T4", "role": "Back-Office", "name": "Barbara Ellen Rodrigues Alves"}, {"team": "T4", "role": "Analise de dados", "name": "Vitor De Oliveira Vieira"}, {"team": "T4", "role": "Bilhetagem", "name": "Filipe Matheus da Costa"}]};
+const DEFAULT_ADMIN_AUTH={"login":"ctis","password":"ctisoimp"};
+const STORAGE_KEY='escala_cco_config_v1';
+const AUTH_STORAGE_KEY='escala_cco_admin_auth_v1';
+const EFFECTIVE_DATE='2026-09-14', ANCHOR_PATTERN_INDEX=5, MS_DAY=86400000;
+const $=s=>document.querySelector(s);
+let CONFIG=loadConfig();
+let ADMIN_AUTH=loadAdminAuth();
+let selectedWeekStart=mondayOf(parseISO(browserTodayISO()));
+let adminLogged=false;
+
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function loadConfig(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s)}catch(e){}return clone(DEFAULT_CONFIG)}
+function saveConfig(){localStorage.setItem(STORAGE_KEY,JSON.stringify(CONFIG))}
+function loadAdminAuth(){try{const s=localStorage.getItem(AUTH_STORAGE_KEY);if(s)return JSON.parse(s)}catch(e){}return clone(DEFAULT_ADMIN_AUTH)}
+function saveAdminAuth(){localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify(ADMIN_AUTH))}
+function isoFromParts(y,m,d){return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`}
+function parseISO(iso){const [y,m,d]=iso.split('-').map(Number);return new Date(Date.UTC(y,m-1,d))}
+function toISO(d){return isoFromParts(d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate())}
+function addDays(d,n){return new Date(d.getTime()+n*MS_DAY)}
+function mondayOf(d){const day=d.getUTCDay(),diff=day===0?-6:1-day;return addDays(d,diff)}
+function browserTodayISO(){const d=new Date();return isoFromParts(d.getFullYear(),d.getMonth()+1,d.getDate())}
+function ptDate(iso,year=false){return new Intl.DateTimeFormat('pt-BR',year?{day:'2-digit',month:'short',year:'numeric'}:{day:'2-digit',month:'2-digit'}).format(new Date(iso+'T12:00:00Z'))}
+function weekday(iso){return new Intl.DateTimeFormat('pt-BR',{weekday:'short',timeZone:'UTC'}).format(new Date(iso+'T12:00:00Z')).replace('.','').toUpperCase()}
+function holidays(y){const x={};const a=(m,d,n)=>x[isoFromParts(y,m,d)]=n;a(1,1,'Confraternização Universal');a(4,21,'Tiradentes');a(5,1,'Dia do Trabalho');a(9,7,'Independência do Brasil');a(10,12,'Nossa Senhora Aparecida');a(11,2,'Finados');a(11,15,'Proclamação da República');a(11,20,'Dia da Consciência Negra');a(12,25,'Natal');return x}
+const HC=new Map();function holidayName(iso){const y=+iso.slice(0,4);if(!HC.has(y))HC.set(y,holidays(y));return HC.get(y)[iso]||''}
+function isWeekend(iso){const d=parseISO(iso).getUTCDay();return d===0||d===6}
+function isBusinessDay(iso){return !isWeekend(iso)&&!holidayName(iso)}
+function businessDayDistance(a,b){if(a===b)return 0;const f=b>a;let d=parseISO(a),c=0,g=0;while(toISO(d)!==b){d=addDays(d,f?1:-1);if(isBusinessDay(toISO(d)))c+=f?1:-1;if(++g>200000)throw Error('Intervalo excessivo')}return c}
+function getGroup(id){return CONFIG.groups.find(g=>g.id===id)}
+function scheduleForGroup(id,iso){if(holidayName(iso))return{code:'F',label:holidayName(iso)};if(isWeekend(iso))return{code:'F',label:'Fim de semana'};const g=getGroup(id);if(!g)return{code:'HO',label:''};const dist=businessDayDistance(EFFECTIVE_DATE,iso),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return{code:g.schedule[idx]||'HO',label:''}}
+function scheduleForEmp(e,iso){return scheduleForGroup(e.team,iso)}
+function weekDates(start=selectedWeekStart){return [0,1,2,3,4].map(i=>toISO(addDays(start,i)))}
+function currentWeekStart(){
+ const today=parseISO(browserTodayISO()),day=today.getUTCDay();
+ return day===6?addDays(today,2):day===0?addDays(today,1):mondayOf(today)
+}
+function weekOffset(){return Math.round((selectedWeekStart-currentWeekStart())/(7*MS_DAY))}
+function cycleWeekIndexFor(start){const mon=toISO(start),dist=businessDayDistance(EFFECTIVE_DATE,mon),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return Math.floor(idx/5)}
+function groupMonthLabel(ds){const a=parseISO(ds[0]),b=parseISO(ds[4]),fm=d=>new Intl.DateTimeFormat('pt-BR',{month:'long',timeZone:'UTC'}).format(d).toUpperCase(),m1=fm(a),m2=fm(b),y1=a.getUTCFullYear(),y2=b.getUTCFullYear();return m1===m2&&y1===y2?`${m1} ${y1}`:y1===y2?`${m1} / ${m2} ${y1}`:`${m1} ${y1} / ${m2} ${y2}`}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+
+function renderTeamSelects(){
+ const cur=$('#team').value||'', emp=$('#empTeam').value||'';
+ const opts=CONFIG.groups.map(g=>`<option value="${esc(g.id)}">${esc(g.id)}</option>`).join('');
+ $('#team').innerHTML='<option value="">Todas as equipes</option>'+opts;if(CONFIG.groups.some(g=>g.id===cur))$('#team').value=cur;
+ $('#empTeam').innerHTML=opts;if(CONFIG.groups.some(g=>g.id===emp))$('#empTeam').value=emp;
+}
+function filteredPeople(){
+ const q=$('#search').value.trim().toLocaleLowerCase('pt-BR'),t=$('#team').value,st=$('#dayFilter').value,ds=weekDates();
+ return CONFIG.employees.filter(e=>{const z=(e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR');if(q&&!z.includes(q))return false;if(t&&e.team!==t)return false;if(st!=='all'&&!ds.some(d=>scheduleForEmp(e,d).code===st))return false;return true})
+}
+function renderWeekHeader(){const ds=weekDates(),o=weekOffset(),lab=o===0?'Semana atual':o===1?'Próxima semana':o===-1?'Semana anterior':o>1?`${o} semanas à frente`:`${Math.abs(o)} semanas atrás`;$('#weekTitle').textContent=lab;$('#weekRange').textContent=`${ptDate(ds[0],true)} a ${ptDate(ds[4],true)}`;$('#gridHeading').textContent=`${lab} • ${ptDate(ds[0])}–${ptDate(ds[4])}`;$('#currentWeek').hidden=o===0}
+function renderKPIs(){const p=filteredPeople(),today=browserTodayISO(),h=holidayName(today)||isWeekend(today);$('#kPeople').textContent=p.length;$('#kTeam').textContent=$('#team').value||'Todas';if(h){$('#kP').textContent='—';$('#kHO').textContent='—';$('#kPSub').textContent=holidayName(today)||'Fim de semana';$('#kHOSub').textContent=holidayName(today)||'Fim de semana'}else{$('#kP').textContent=p.filter(e=>scheduleForEmp(e,today).code==='P').length;$('#kHO').textContent=p.filter(e=>scheduleForEmp(e,today).code==='HO').length;$('#kPSub').textContent=ptDate(today,true);$('#kHOSub').textContent=ptDate(today,true)}}
+function cell(e,iso){
+ const s=scheduleForEmp(e,iso),filter=$('#dayFilter').value;
+ if(s.code==='F')return `<span class="status F">Feriado</span><span class="holiday-name">${esc(s.label)}</span>`;
+ if(filter!=='all' && s.code!==filter)return '<span style="color:#98a2b3">—</span>';
+ return `<span class="status ${s.code}">${s.code}</span>`;
+}
+function renderGrid(){const p=filteredPeople(),ds=weekDates(),today=browserTodayISO();let h='<thead><tr><th class="namecol">Colaborador</th><th class="teamcol">Equipe</th><th class="rolecol">Função</th>'+ds.map(d=>`<th class="day ${d===today?'currentday':''}">${weekday(d)}<br>${ptDate(d)}</th>`).join('')+'</tr></thead><tbody>';if(!p.length)h+='<tr><td colspan="8" class="empty">Nenhum colaborador encontrado.</td></tr>';p.forEach(e=>{h+=`<tr><td class="namecol"><strong>${esc(e.name)}</strong></td><td class="teamcol">${esc(e.team)}</td><td class="rolecol">${esc(e.role)}</td>`+ds.map(d=>`<td class="${d===today?'currentday':''}">${cell(e,d)}</td>`).join('')+'</tr>'});$('#scheduleTable').innerHTML=h+'</tbody>'}
+function renderToday(){const iso=browserTodayISO(),holiday=holidayName(iso);$('#todayTitle').textContent=`Hoje • ${ptDate(iso,true)}`;if(holiday||isWeekend(iso)){$('#todayContent').innerHTML=`<div class="holidaycard"><strong>${esc(holiday||'Fim de semana')}</strong><br>Não há escala P/HO.</div>`;return}const p=filteredPeople(),ids=CONFIG.groups.map(g=>g.id).filter(id=>!$('#team').value||$('#team').value===id);let h='<div class="cards">';ids.forEach(id=>{const arr=p.filter(e=>e.team===id);if(!arr.length)return;const pc=arr.filter(e=>scheduleForEmp(e,iso).code==='P').length,hc=arr.length-pc;h+=`<article class="daycard"><h3>Equipe ${esc(id)}</h3><div class="daystats"><span class="chip p">${pc} presencial</span><span class="chip ho">${hc} home office</span></div><div class="names">`;arr.forEach(e=>{const s=scheduleForEmp(e,iso).code;h+=`<div class="person"><span class="status ${s}" style="min-width:34px;height:24px;margin-right:6px">${s}</span>${esc(e.name)}</div>`});h+='</div></article>'});$('#todayContent').innerHTML=h+'</div>'}
+function renderPersonSelect(){const cur=$('#personSelect').value,arr=[...CONFIG.employees].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));$('#personSelect').innerHTML='<option value="">Selecione um colaborador</option>'+arr.map(e=>`<option value="${CONFIG.employees.indexOf(e)}">${esc(e.name)} — ${esc(e.team)}</option>`).join('');if(cur!==''&&CONFIG.employees[+cur])$('#personSelect').value=cur}
+function renderPerson(){const v=$('#personSelect').value,o=$('#personSchedule');if(v===''){o.className='empty';o.innerHTML='Selecione um colaborador.';return}const e=CONFIG.employees[+v];let h=`<div style="margin-bottom:12px"><strong>${esc(e.name)}</strong> <span style="color:var(--muted)">• ${esc(e.team)} • ${esc(e.role)}</span></div><div class="weeks">`;for(let w=0;w<4;w++){const ds=weekDates(addDays(selectedWeekStart,w*7));h+=`<div class="week"><h3>${w===0?'Semana selecionada':`+${w} semana${w>1?'s':''}`} • ${ptDate(ds[0])}–${ptDate(ds[4])}</h3><div class="weekdays">`;ds.forEach(d=>{const s=scheduleForEmp(e,d);h+=`<div class="wday"><b>${weekday(d)}<br>${ptDate(d)}</b>${s.code==='F'?`<span class="status F">F</span>`:`<span class="status ${s.code}">${s.code}</span>`}</div>`});h+='</div></div>'}o.className='';o.innerHTML=h+'</div>'}
+function renderGroups(){const ds=weekDates(),today=browserTodayISO(),cur=cycleWeekIndexFor(selectedWeekStart),next=weekOffset()===0?(cur+1)%4:-1,days=['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'];$('#groupMonth').textContent=groupMonthLabel(ds);let h='<thead><tr><th class="dow">Dia da semana</th><th class="daynum">Dia</th>';for(let w=0;w<4;w++){const cl=(w===cur?'cycle-current ':'')+(w===next?'cycle-next':'');h+=`<th class="${cl}">SEMANA ${w+1}${w===next?'<span class="cycle-label">PRÓXIMA</span>':''}</th>`}h+='</tr></thead><tbody>';for(let d=0;d<5;d++){const isToday=ds[d]===today,num=String(parseISO(ds[d]).getUTCDate()).padStart(2,'0');h+=`<tr><td class="dow ${isToday?'today-dow':''}">${days[d]}${isToday?' <span class="cycle-label">HOJE</span>':''}</td><td class="daynum ${isToday?'today-daynum':''}">${num}</td>`;for(let w=0;w<4;w++){const cl=(w===cur?'cycle-current ':'')+(w===next?'cycle-next':''),idx=w*5+d,pres=CONFIG.groups.filter(g=>g.schedule[idx]==='P').map(g=>g.id);h+=`<td class="${cl}"><div class="group-badges">${pres.length?pres.map(x=>`<span class="group-badge">${esc(x)}</span>`).join(''):'—'}</div></td>`}h+='</tr>'}$('#groupsTable').innerHTML=h+'</tbody>';$('#groupsHint').textContent=`Semana selecionada: ${ptDate(ds[0],true)} a ${ptDate(ds[4],true)} • corresponde à SEMANA ${cur+1} do ciclo.`}
+
+function renderAdmin(){
+ renderTeamSelects();
+ const q=($('#adminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+
+ const filteredGroups=CONFIG.groups.filter(g=>!q||g.id.toLocaleLowerCase('pt-BR').includes(q));
+ $('#groupList').innerHTML=filteredGroups.map(g=>`<div class="mini-item"><strong>${esc(g.id)}</strong><button class="smallbtn danger" data-remove-group="${esc(g.id)}">Remover</button></div>`).join('')||'<div class="empty">Nenhum grupo encontrado.</div>';
+
+ const filteredEmployees=CONFIG.employees
+   .map((e,i)=>({e,i}))
+   .filter(({e})=>{
+     if(!q)return true;
+     return (e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR').includes(q);
+   });
+
+ $('#employeeList').innerHTML=filteredEmployees.map(({e,i})=>`<div class="mini-item"><div><strong>${esc(e.name)}</strong><div class="hint">${esc(e.role)} • ${esc(e.team)}</div></div><button class="smallbtn danger" data-remove-emp="${i}">Remover</button></div>`).join('')||'<div class="empty">Nenhum funcionário encontrado.</div>';
+
+ let h='<thead><tr><th>Grupo</th>';for(let w=1;w<=4;w++)for(let d=1;d<=5;d++)h+=`<th>S${w}<br>D${d}</th>`;h+='</tr></thead><tbody>';
+ CONFIG.groups.forEach((g,gi)=>{h+=`<tr><td><strong>${esc(g.id)}</strong></td>`;g.schedule.forEach((s,si)=>h+=`<td><button class="toggle ${s}" data-gi="${gi}" data-si="${si}">${s}</button></td>`);h+='</tr>'});$('#editScheduleTable').innerHTML=h+'</tbody>';
+}
+
+let mobileSelectedEmployeeIndex=null;
+let mobileWeekStart=currentWeekStart();
+
+function renderMobileSuggestions(){
+ const box=$('#mobileSuggestions');
+ if(!box)return;
+ const q=($('#mobileEmployeeSearch').value||'').trim().toLocaleLowerCase('pt-BR');
+ if(!q){box.innerHTML='';return;}
+ const matches=CONFIG.employees
+   .map((e,i)=>({e,i}))
+   .filter(({e})=>(e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR').includes(q))
+   .slice(0,8);
+ box.innerHTML=matches.length
+   ? matches.map(({e,i})=>`<button type="button" class="mobile-suggestion" data-mobile-emp="${i}"><strong>${esc(e.name)}</strong><span>${esc(e.role)} • ${esc(e.team)}</span></button>`).join('')
+   : '<div class="empty" style="padding:12px">Funcionário não encontrado.</div>';
+}
+
+function renderMobileEmployee(){
+ const result=$('#mobileResult');
+ if(!result)return;
+ if(mobileSelectedEmployeeIndex===null || !CONFIG.employees[mobileSelectedEmployeeIndex]){
+   result.hidden=true;
+   return;
+ }
+ const e=CONFIG.employees[mobileSelectedEmployeeIndex], ds=weekDates(mobileWeekStart), today=browserTodayISO();
+ $('#mobileEmployeeName').textContent=e.name;
+ $('#mobileEmployeeMeta').textContent=`${e.role} • ${e.team} • ${ptDate(ds[0],true)} a ${ptDate(ds[4],true)}`;
+ const mobileCurrentBtn=$('#mobileCurrentWeek');
+ if(mobileCurrentBtn){
+   const isCurrent=toISO(mobileWeekStart)===toISO(currentWeekStart());
+   mobileCurrentBtn.disabled=isCurrent;
+   mobileCurrentBtn.textContent=isCurrent?'Semana atual':'Voltar para a semana atual';
+ }
+ $('#mobileWeekGrid').innerHTML=ds.map(d=>{
+   const s=scheduleForEmp(e,d);
+   const label=s.code==='F' ? (s.label||'Feriado') : (s.code==='P'?'Presencial':'Home office');
+   return `<div class="mobile-day ${d===today?'today':''}">
+     <div><div class="dow">${weekday(d)}</div><div class="date">${ptDate(d)}</div></div>
+     <div>${esc(label)}</div>
+     <span class="status ${s.code}">${s.code==='F'?'F':s.code}</span>
+   </div>`;
+ }).join('');
+ result.hidden=false;
+}
+
+
+function generateUpdatedHtml(){
+ let html='<!doctype html>\n'+document.documentElement.outerHTML;
+ const cfg=JSON.stringify(CONFIG);
+ const auth=JSON.stringify(ADMIN_AUTH);
+ html=html.replace(/const DEFAULT_CONFIG=.*?;\nconst DEFAULT_ADMIN_AUTH/s, 'const DEFAULT_CONFIG='+cfg+';\\nconst DEFAULT_ADMIN_AUTH');
+ html=html.replace(/const DEFAULT_ADMIN_AUTH=.*?;\nconst STORAGE_KEY/s, 'const DEFAULT_ADMIN_AUTH='+auth+';\\nconst STORAGE_KEY');
+ return html;
+}
+function downloadUpdatedHtml(messageTarget='#adminMsg'){
+ saveConfig();
+ saveAdminAuth();
+ const html=generateUpdatedHtml();
+ const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+ const a=document.createElement('a');
+ const url=URL.createObjectURL(blob);
+ a.href=url;
+ a.download='index.html';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const el=$(messageTarget);
+ if(el){
+  el.textContent='Nova versão gerada como index.html. Substitua o arquivo atual no GitHub por este arquivo.';
+  el.className='msg ok';
+ }
+}
+
+function refresh(){renderTeamSelects();renderWeekHeader();renderKPIs();renderGrid();renderToday();renderPersonSelect();renderPerson();renderGroups();renderMobileSuggestions();renderMobileEmployee();if(adminLogged)renderAdmin()}
+
+function openView(v){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
+ document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+ $('#'+v+'View').hidden=false;
+ const pub=v!=='manage';$('#publicTools').hidden=!pub;$('#legend').hidden=!pub;
+ if(v==='manage'){if(adminLogged){$('#loginArea').hidden=true;$('#adminArea').hidden=false;$('#newAdminLogin').value=ADMIN_AUTH.login;renderAdmin()}else{$('#loginArea').hidden=false;$('#adminArea').hidden=true}}
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>openView(b.dataset.view)));
+['#search','#team','#dayFilter'].forEach(s=>$(s).addEventListener('input',refresh));
+$('#prevWeek').onclick=()=>{selectedWeekStart=addDays(selectedWeekStart,-7);refresh()};
+$('#nextWeek').onclick=()=>{selectedWeekStart=addDays(selectedWeekStart,7);refresh()};
+$('#currentWeek').onclick=()=>{selectedWeekStart=currentWeekStart();refresh()};
+$('#personSelect').onchange=renderPerson;
+
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();const ok=$('#adminLogin').value===ADMIN_AUTH.login&&$('#adminPass').value===ADMIN_AUTH.password;$('#loginMsg').textContent=ok?'Acesso liberado.':'Login ou senha inválidos.';$('#loginMsg').className='msg '+(ok?'ok':'error');if(ok){adminLogged=true;$('#loginArea').hidden=true;$('#adminArea').hidden=false;$('#newAdminLogin').value=ADMIN_AUTH.login;renderAdmin()}});
+$('#logoutBtn').onclick=()=>{adminLogged=false;$('#adminArea').hidden=true;$('#loginArea').hidden=false;$('#adminPass').value='';$('#loginMsg').textContent=''};
+$('#backPublicBtn').onclick=()=>openView('grid');
+$('#adminSearch').addEventListener('input',renderAdmin);
+$('#clearAdminSearch').onclick=()=>{$('#adminSearch').value='';renderAdmin()};
+
+$('#groupForm').addEventListener('submit',e=>{e.preventDefault();const id=$('#newGroup').value.trim().toUpperCase();if(!id)return;if(CONFIG.groups.some(g=>g.id.toUpperCase()===id))return alert('Esse grupo já existe.');CONFIG.groups.push({id,schedule:Array.from({length:20},(_,i)=>i%5<3?'P':'HO')});$('#newGroup').value='';renderAdmin()});
+$('#employeeForm').addEventListener('submit',e=>{e.preventDefault();const name=$('#empName').value.trim(),role=$('#empRole').value.trim(),team=$('#empTeam').value;if(!name||!role||!team)return;CONFIG.employees.push({name,role,team});e.target.reset();renderAdmin()});
+$('#groupList').addEventListener('click',e=>{const id=e.target.dataset.removeGroup;if(!id)return;const count=CONFIG.employees.filter(x=>x.team===id).length;if(count&&!confirm(`O grupo ${id} possui ${count} funcionário(s). Remover o grupo também removerá esses funcionários. Continuar?`))return;if(!count&&!confirm(`Remover o grupo ${id}?`))return;CONFIG.groups=CONFIG.groups.filter(g=>g.id!==id);CONFIG.employees=CONFIG.employees.filter(x=>x.team!==id);renderAdmin()});
+$('#employeeList').addEventListener('click',e=>{const i=e.target.dataset.removeEmp;if(i===undefined)return;if(confirm(`Remover ${CONFIG.employees[+i].name}?`)){CONFIG.employees.splice(+i,1);renderAdmin()}});
+$('#editScheduleTable').addEventListener('click',e=>{if(!e.target.classList.contains('toggle'))return;const g=CONFIG.groups[+e.target.dataset.gi],i=+e.target.dataset.si;g.schedule[i]=g.schedule[i]==='P'?'HO':'P';renderAdmin()});
+$('#randomBtn').onclick=()=>{if(!confirm('Sortear uma nova escala para todos os grupos? As alterações só serão efetivadas ao clicar em Salvar alterações.'))return;CONFIG.groups.forEach(g=>{let arr=[];for(let w=0;w<4;w++){let days=[0,1,2,3,4].sort(()=>Math.random()-.5).slice(0,3);for(let d=0;d<5;d++)arr.push(days.includes(d)?'P':'HO')}g.schedule=arr});renderAdmin()};
+$('#saveBtn').onclick=()=>{saveConfig();refresh();$('#adminMsg').textContent='Rascunho salvo neste navegador.';$('#adminMsg').className='msg ok'};
+$('#saveVersionBtn').onclick=()=>downloadUpdatedHtml('#adminMsg');
+$('#credentialForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const login=$('#newAdminLogin').value.trim();
+ const pass=$('#newAdminPass').value;
+ const confirmPass=$('#confirmAdminPass').value;
+ const msg=$('#credentialMsg');
+ if(!login){msg.textContent='Informe um login.';msg.className='msg error';return}
+ if(pass && pass.length<4){msg.textContent='A nova senha deve ter pelo menos 4 caracteres.';msg.className='msg error';return}
+ if(pass!==confirmPass){msg.textContent='A confirmação da senha não confere.';msg.className='msg error';return}
+ ADMIN_AUTH={login,password:pass||ADMIN_AUTH.password};
+ saveAdminAuth();
+ $('#newAdminPass').value='';
+ $('#confirmAdminPass').value='';
+ msg.textContent='Login/senha atualizados. Gerando a nova versão...';
+ msg.className='msg ok';
+ downloadUpdatedHtml('#credentialMsg');
+});
+$('#resetBtn').onclick=()=>{if(!confirm('Restaurar a configuração original?'))return;CONFIG=clone(DEFAULT_CONFIG);saveConfig();refresh();renderAdmin();$('#adminMsg').textContent='Configuração original restaurada.';$('#adminMsg').className='msg ok'};
+$('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(CONFIG,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='escala-cco-config.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const obj=JSON.parse(await f.text());if(!Array.isArray(obj.groups)||!Array.isArray(obj.employees))throw Error();CONFIG=obj;saveConfig();refresh();renderAdmin();$('#adminMsg').textContent='Configuração importada e salva.';$('#adminMsg').className='msg ok'}catch(err){alert('Arquivo de configuração inválido.')}e.target.value=''});
+
+
+$('#mobileEmployeeSearch').addEventListener('input',renderMobileSuggestions);
+$('#mobilePrevWeek').onclick=()=>{mobileWeekStart=addDays(mobileWeekStart,-7);renderMobileEmployee()};
+$('#mobileNextWeek').onclick=()=>{mobileWeekStart=addDays(mobileWeekStart,7);renderMobileEmployee()};
+$('#mobileCurrentWeek').onclick=()=>{mobileWeekStart=currentWeekStart();renderMobileEmployee()};
+$('#mobileSuggestions').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-mobile-emp]');
+ if(!btn)return;
+ mobileSelectedEmployeeIndex=+btn.dataset.mobileEmp;
+ mobileWeekStart=currentWeekStart();
+ const emp=CONFIG.employees[mobileSelectedEmployeeIndex];
+ $('#mobileEmployeeSearch').value=emp.name;
+ $('#mobileSuggestions').innerHTML='';
+ renderMobileEmployee();
+ window.scrollTo({top:$('#mobileResult').offsetTop-10,behavior:'smooth'});
+});
+
+refresh();
+</script>
+</body>
+</html>
