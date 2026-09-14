@@ -257,7 +257,24 @@ function isBusinessDay(iso){return !isWeekend(iso)&&!holidayName(iso)}
 function businessDayDistance(a,b){if(a===b)return 0;const f=b>a;let d=parseISO(a),c=0,g=0;while(toISO(d)!==b){d=addDays(d,f?1:-1);if(isBusinessDay(toISO(d)))c+=f?1:-1;if(++g>200000)throw Error('Intervalo excessivo')}return c}
 function getGroup(id){return CONFIG.groups.find(g=>g.id===id)}
 function scheduleForGroup(id,iso){if(holidayName(iso))return{code:'F',label:holidayName(iso)};if(isWeekend(iso))return{code:'F',label:'Fim de semana'};const g=getGroup(id);if(!g)return{code:'HO',label:''};const dist=businessDayDistance(EFFECTIVE_DATE,iso),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return{code:g.schedule[idx]||'HO',label:''}}
-function scheduleForEmp(e,iso){return scheduleForGroup(e.team,iso)}
+function scheduleForEmp(e,iso){
+  const base=scheduleForGroup(e.team,iso);
+  // Escala fixa individual do Vitor De Oliveira Vieira.
+  // Mantém feriados e fins de semana como F.
+  if(e.name.trim().toLocaleLowerCase('pt-BR')==='vitor de oliveira vieira'){
+    if(base.code==='F')return base;
+    const dist=businessDayDistance(EFFECTIVE_DATE,iso);
+    const idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;
+    const vitorSchedule=[
+      'HO','HO','P','P','P',   // Semana 1: Seg HO, Ter HO, Qua P, Qui P, Sex P
+      'P','HO','HO','P','P',   // Semana 2: Seg P, Ter HO, Qua HO, Qui P, Sex P
+      'P','P','HO','P','HO',   // Semana 3: Seg P, Ter P, Qua HO, Qui P, Sex HO
+      'P','HO','HO','P','P'    // Semana 4: Seg P, Ter HO, Qua HO, Qui P, Sex P
+    ];
+    return{code:vitorSchedule[idx],label:''};
+  }
+  return base;
+}
 function weekDates(start=selectedWeekStart){return [0,1,2,3,4].map(i=>toISO(addDays(start,i)))}
 function currentWeekStart(){
  const today=parseISO(browserTodayISO()),day=today.getUTCDay();
