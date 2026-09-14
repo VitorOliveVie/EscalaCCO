@@ -20,7 +20,13 @@
 body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",Arial,sans-serif}
 .app{max-width:1500px;margin:auto;padding:22px}
 .hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
-.hero-logo{max-height:48px;width:auto;display:block;margin-bottom:6px}
+.hero-logo {
+  max-height: 80px;
+  width: auto;
+  display: block;
+  margin-bottom: 6px;
+  filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.8));
+}
 .hero p{margin:0;color:var(--muted)}
 .notice{background:var(--warnbg);color:var(--warn);border:1px solid #f2d39c;border-radius:10px;padding:10px 12px;font-weight:600}
 .controls{display:grid;grid-template-columns:minmax(230px,1.5fr) repeat(2,minmax(150px,.7fr));gap:10px;background:var(--card);padding:12px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px}
