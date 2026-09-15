@@ -20,14 +20,7 @@
 body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",Arial,sans-serif}
 .app{max-width:1500px;margin:auto;padding:22px}
 .hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
-.hero-logo {
-  max-height: 80px;
-  width: auto;
-  display: block;
-  margin-bottom: 6px;
-  filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.8));
-}
-.hero p{margin:0;color:var(--muted)}
+.hero h1{font-size:30px;margin:0 0 4px;letter-spacing:-.03em}.hero p{margin:0;color:var(--muted)}
 .notice{background:var(--warnbg);color:var(--warn);border:1px solid #f2d39c;border-radius:10px;padding:10px 12px;font-weight:600}
 .controls{display:grid;grid-template-columns:minmax(230px,1.5fr) repeat(2,minmax(150px,.7fr));gap:10px;background:var(--card);padding:12px;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px}
 input,select,button{font:inherit} input,select{width:100%;height:42px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;padding:0 11px;color:var(--text)}
@@ -54,7 +47,7 @@ thead th{position:sticky;top:0;z-index:5;background:#f8fafc;font-size:12px;color
 .empty{padding:34px;text-align:center;color:var(--muted)}.holidaycard{padding:28px;text-align:center;color:var(--holiday);background:var(--holidaybg)}
 /* Gestão */
 .loginbox{max-width:430px;margin:30px auto;padding:22px;border:1px solid var(--line);border-radius:14px;background:#fff}.loginbox h2{margin:0 0 6px}.loginbox p{color:var(--muted);margin:0 0 16px}.field{margin-bottom:12px}.field label{display:block;font-weight:700;margin-bottom:5px}.msg{margin-top:10px;font-size:12px}.msg.error{color:var(--danger)}.msg.ok{color:var(--p)}
-.admin{padding:16px}.adminbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.adminbar h2{margin:0}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-searchbar{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:8px;align-items:end;margin-bottom:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.admin-searchbar .field{margin:0}.admin-searchbar .hint{margin-top:4px}.admin-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:14px}.admin-card{border:1px solid var(--line);border-radius:12px;overflow:hidden}.admin-card h3{margin:0;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:14px}.admin-body{padding:14px}.rowform{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:12px}.rowform.emp{grid-template-columns:1.2fr 1fr .65fr auto}.mini-list{display:grid;gap:7px}.mini-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 10px;background:#f8fafc;border-radius:99px}.mini-item strong{overflow:hidden;text-overflow:ellipsis}.smallbtn{border:1px solid #d0d5dd;background:#fff;border-radius:7px;padding:6px 9px;cursor:pointer;font-weight:700}.smallbtn.danger{color:var(--danger)}
+.admin{padding:16px}.adminbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.adminbar h2{margin:0}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin-searchbar{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:8px;align-items:end;margin-bottom:14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.admin-searchbar .field{margin:0}.admin-searchbar .hint{margin-top:4px}.admin-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:14px}.admin-card{border:1px solid var(--line);border-radius:12px;overflow:hidden}.admin-card h3{margin:0;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:14px}.admin-body{padding:14px}.rowform{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-bottom:12px}.rowform.emp{grid-template-columns:1.2fr 1fr .65fr auto}.mini-list{display:grid;gap:7px}.mini-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 10px;background:#f8fafc;border-radius:9px}.mini-item strong{overflow:hidden;text-overflow:ellipsis}.smallbtn{border:1px solid #d0d5dd;background:#fff;border-radius:7px;padding:6px 9px;cursor:pointer;font-weight:700}.smallbtn.danger{color:var(--danger)}
 .schedule-editor{margin-top:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.editor-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--line)}.editor-head h3{margin:0}.editor-toolbar{display:flex;gap:8px;flex-wrap:wrap}.edit-scroll{overflow:auto}.edit-table{min-width:820px}.edit-table td,.edit-table th{padding:8px}.toggle{border:0;border-radius:8px;min-width:50px;height:32px;font-weight:800;cursor:pointer}.toggle.P{background:var(--pbg);color:var(--p)}.toggle.HO{background:var(--hobg);color:var(--ho)}
 .security-note{margin-top:14px;padding:12px;border-radius:10px;background:var(--warnbg);color:var(--warn);font-size:12px}.footer{color:var(--muted);font-size:12px;margin-top:10px;text-align:right}
 
@@ -97,12 +90,7 @@ thead th{position:sticky;top:0;z-index:5;background:#f8fafc;font-size:12px;color
 </head>
 <body>
 <div class="app">
- <div class="hero">
-  <div>
-   <img src="/EscalaCCO/assets/favicon-cco.png" alt="Logo Escala CCO" class="hero-logo">
-   <p>Consulta automática por semana, grupos e colaboradores.</p>
-  </div>
- </div>
+ <div class="hero"><div><img src="/EscalaCCO/assets/favicon-cco.png" alt="Logo Escala CCO" class="hero-logo"><p>Consulta automática por semana, grupos e colaboradores.</p></div></div>
  <section class="mobile-quick" id="mobileQuick">
   <h2>Consultar minha escala</h2>
   <p>Digite seu nome para ver rapidamente sua escala desta semana.</p>
@@ -300,6 +288,195 @@ function currentWeekStart(){
 function weekOffset(){return Math.round((selectedWeekStart-currentWeekStart())/(7*MS_DAY))}
 function cycleWeekIndexFor(start){const mon=toISO(start),dist=businessDayDistance(EFFECTIVE_DATE,mon),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return Math.floor(idx/5)}
 function groupMonthLabel(ds){const a=parseISO(ds[0]),b=parseISO(ds[4]),fm=d=>new Intl.DateTimeFormat('pt-BR',{month:'long',timeZone:'UTC'}).format(d).toUpperCase(),m1=fm(a),m2=fm(b),y1=a.getUTCFullYear(),y2=b.getUTCFullYear();return m1===m2&&y1===y2?`${m1} ${y1}`:y1===y2?`${m1} / ${m2} ${y1}`:`${m1} ${y1} / ${m2} ${y2}`}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+
+function renderTeamSelects(){
+ const cur=$('#team').value||'', emp=$('#empTeam').value||'';
+ const opts=CONFIG.groups.map(g=>`<option value="${esc(g.id)}">${esc(g.id)}</option>`).join('');
+ $('#team').innerHTML='<option value="">Todas as equipes</option>'+opts;if(CONFIG.groups.some(g=>g.id===cur))$('#team').value=cur;
+ $('#empTeam').innerHTML=opts;if(CONFIG.groups.some(g=>g.id===emp))$('#empTeam').value=emp;
+}
+function filteredPeople(){
+ const q=$('#search').value.trim().toLocaleLowerCase('pt-BR'),t=$('#team').value,st=$('#dayFilter').value,ds=weekDates();
+ return CONFIG.employees.filter(e=>{const z=(e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR');if(q&&!z.includes(q))return false;if(t&&e.team!==t)return false;if(st!=='all'&&!ds.some(d=>scheduleForEmp(e,d).code===st))return false;return true})
+}
+function renderWeekHeader(){const ds=weekDates(),o=weekOffset(),lab=o===0?'Semana atual':o===1?'Próxima semana':o===-1?'Semana anterior':o>1?`${o} semanas à frente`:`${Math.abs(o)} semanas atrás`;$('#weekTitle').textContent=lab;$('#weekRange').textContent=`${ptDate(ds[0],true)} a ${ptDate(ds[4],true)}`;$('#gridHeading').textContent=`${lab} • ${ptDate(ds[0])}–${ptDate(ds[4])}`;$('#currentWeek').hidden=o===0}
+function renderKPIs(){const p=filteredPeople(),today=browserTodayISO(),h=holidayName(today)||isWeekend(today);$('#kPeople').textContent=p.length;$('#kTeam').textContent=$('#team').value||'Todas';if(h){$('#kP').textContent='—';$('#kHO').textContent='—';$('#kPSub').textContent=holidayName(today)||'Fim de semana';$('#kHOSub').textContent=holidayName(today)||'Fim de semana'}else{$('#kP').textContent=p.filter(e=>scheduleForEmp(e,today).code==='P').length;$('#kHO').textContent=p.filter(e=>scheduleForEmp(e,today).code==='HO').length;$('#kPSub').textContent=ptDate(today,true);$('#kHOSub').textContent=ptDate(today,true)}}
+function cell(e,iso){
+ const s=scheduleForEmp(e,iso),filter=$('#dayFilter').value;
+ if(s.code==='F')return `<span class="status F">Feriado</span><span class="holiday-name">${esc(s.label)}</span>`;
+ if(filter!=='all' && s.code!==filter)return '<span style="color:#98a2b3">—</span>';
+ return `<span class="status ${s.code}">${s.code}</span>`;
+}
+function renderGrid(){const p=filteredPeople(),ds=weekDates(),today=browserTodayISO();let h='<thead><tr><th class="namecol">Colaborador</th><th class="teamcol">Equipe</th><th class="rolecol">Função</th>'+ds.map(d=>`<th class="day ${d===today?'currentday':''}">${weekday(d)}<br>${ptDate(d)}</th>`).join('')+'</tr></thead><tbody>';if(!p.length)h+='<tr><td colspan="8" class="empty">Nenhum colaborador encontrado.</td></tr>';p.forEach(e=>{h+=`<tr><td class="namecol"><strong>${esc(e.name)}</strong></td><td class="teamcol">${esc(e.team)}</td><td class="rolecol">${esc(e.role)}</td>`+ds.map(d=>`<td class="${d===today?'currentday':''}">${cell(e,d)}</td>`).join('')+'</tr>'});$('#scheduleTable').innerHTML=h+'</tbody>'}
+function renderToday(){const iso=browserTodayISO(),holiday=holidayName(iso);$('#todayTitle').textContent=`Hoje • ${ptDate(iso,true)}`;if(holiday||isWeekend(iso)){$('#todayContent').innerHTML=`<div class="holidaycard"><strong>${esc(holiday||'Fim de semana')}</strong><br>Não há escala P/HO.</div>`;return}const p=filteredPeople(),ids=CONFIG.groups.map(g=>g.id).filter(id=>!$('#team').value||$('#team').value===id);let h='<div class="cards">';ids.forEach(id=>{const arr=p.filter(e=>e.team===id);if(!arr.length)return;const pc=arr.filter(e=>scheduleForEmp(e,iso).code==='P').length,hc=arr.length-pc;h+=`<article class="daycard"><h3>Equipe ${esc(id)}</h3><div class="daystats"><span class="chip p">${pc} presencial</span><span class="chip ho">${hc} home office</span></div><div class="names">`;arr.forEach(e=>{const s=scheduleForEmp(e,iso).code;h+=`<div class="person"><span class="status ${s}" style="min-width:34px;height:24px;margin-right:6px">${s}</span>${esc(e.name)}</div>`});h+='</div></article>'});$('#todayContent').innerHTML=h+'</div>'}
+function renderPersonSelect(){const cur=$('#personSelect').value,arr=[...CONFIG.employees].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));$('#personSelect').innerHTML='<option value="">Selecione um colaborador</option>'+arr.map(e=>`<option value="${CONFIG.employees.indexOf(e)}">${esc(e.name)} — ${esc(e.team)}</option>`).join('');if(cur!==''&&CONFIG.employees[+cur])$('#personSelect').value=cur}
+function renderPerson(){const v=$('#personSelect').value,o=$('#personSchedule');if(v===''){o.className='empty';o.innerHTML='Selecione um colaborador.';return}const e=CONFIG.employees[+v];let h=`<div style="margin-bottom:12px"><strong>${esc(e.name)}</strong> <span style="color:var(--muted)">• ${esc(e.team)} • ${esc(e.role)}</span></div><div class="weeks">`;for(let w=0;w<4;w++){const ds=weekDates(addDays(selectedWeekStart,w*7));h+=`<div class="week"><h3>${w===0?'Semana selecionada':`+${w} semana${w>1?'s':''}`} • ${ptDate(ds[0])}–${ptDate(ds[4])}</h3><div class="weekdays">`;ds.forEach(d=>{const s=scheduleForEmp(e,d);h+=`<div class="wday"><b>${weekday(d)}<br>${ptDate(d)}</b>${s.code==='F'?`<span class="status F">F</span>`:`<span class="status ${s.code}">${s.code}</span>`}</div>`});h+='</div></div>'}o.className='';o.innerHTML=h+'</div>'}
+function renderGroups(){const ds=weekDates(),today=browserTodayISO(),cur=cycleWeekIndexFor(selectedWeekStart),next=weekOffset()===0?(cur+1)%4:-1,days=['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira'];$('#groupMonth').textContent=groupMonthLabel(ds);let h='<thead><tr><th class="dow">Dia da semana</th><th class="daynum">Dia</th>';for(let w=0;w<4;w++){const cl=(w===cur?'cycle-current ':'')+(w===next?'cycle-next':'');h+=`<th class="${cl}">SEMANA ${w+1}${w===next?'<span class="cycle-label">PRÓXIMA</span>':''}</th>`}h+='</tr></thead><tbody>';for(let d=0;d<5;d++){const isToday=ds[d]===today,num=String(parseISO(ds[d]).getUTCDate()).padStart(2,'0');h+=`<tr><td class="dow ${isToday?'today-dow':''}">${days[d]}${isToday?' <span class="cycle-label">HOJE</span>':''}</td><td class="daynum ${isToday?'today-daynum':''}">${num}</td>`;for(let w=0;w<4;w++){const cl=(w===cur?'cycle-current ':'')+(w===next?'cycle-next':''),idx=w*5+d,pres=CONFIG.groups.filter(g=>g.schedule[idx]==='P').map(g=>g.id);h+=`<td class="${cl}"><div class="group-badges">${pres.length?pres.map(x=>`<span class="group-badge">${esc(x)}</span>`).join(''):'—'}</div></td>`}h+='</tr>'}$('#groupsTable').innerHTML=h+'</tbody>';$('#groupsHint').textContent=`Semana selecionada: ${ptDate(ds[0],true)} a ${ptDate(ds[4],true)} • corresponde à SEMANA ${cur+1} do ciclo.`}
+
+function renderAdmin(){
+ renderTeamSelects();
+ const q=($('#adminSearch')?.value||'').trim().toLocaleLowerCase('pt-BR');
+
+ const filteredGroups=CONFIG.groups.filter(g=>!q||g.id.toLocaleLowerCase('pt-BR').includes(q));
+ $('#groupList').innerHTML=filteredGroups.map(g=>`<div class="mini-item"><strong>${esc(g.id)}</strong><button class="smallbtn danger" data-remove-group="${esc(g.id)}">Remover</button></div>`).join('')||'<div class="empty">Nenhum grupo encontrado.</div>';
+
+ const filteredEmployees=CONFIG.employees
+   .map((e,i)=>({e,i}))
+   .filter(({e})=>{
+     if(!q)return true;
+     return (e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR').includes(q);
+   });
+
+ $('#employeeList').innerHTML=filteredEmployees.map(({e,i})=>`<div class="mini-item"><div><strong>${esc(e.name)}</strong><div class="hint">${esc(e.role)} • ${esc(e.team)}</div></div><button class="smallbtn danger" data-remove-emp="${i}">Remover</button></div>`).join('')||'<div class="empty">Nenhum funcionário encontrado.</div>';
+
+ let h='<thead><tr><th>Grupo</th>';for(let w=1;w<=4;w++)for(let d=1;d<=5;d++)h+=`<th>S${w}<br>D${d}</th>`;h+='</tr></thead><tbody>';
+ CONFIG.groups.forEach((g,gi)=>{h+=`<tr><td><strong>${esc(g.id)}</strong></td>`;g.schedule.forEach((s,si)=>h+=`<td><button class="toggle ${s}" data-gi="${gi}" data-si="${si}">${s}</button></td>`);h+='</tr>'});$('#editScheduleTable').innerHTML=h+'</tbody>';
+}
+
+let mobileSelectedEmployeeIndex=null;
+let mobileWeekStart=currentWeekStart();
+
+function renderMobileSuggestions(){
+ const box=$('#mobileSuggestions');
+ if(!box)return;
+ const q=($('#mobileEmployeeSearch').value||'').trim().toLocaleLowerCase('pt-BR');
+ if(!q){box.innerHTML='';return;}
+ const matches=CONFIG.employees
+   .map((e,i)=>({e,i}))
+   .filter(({e})=>(e.name+' '+e.role+' '+e.team).toLocaleLowerCase('pt-BR').includes(q))
+   .slice(0,8);
+ box.innerHTML=matches.length
+   ? matches.map(({e,i})=>`<button type="button" class="mobile-suggestion" data-mobile-emp="${i}"><strong>${esc(e.name)}</strong><span>${esc(e.role)} • ${esc(e.team)}</span></button>`).join('')
+   : '<div class="empty" style="padding:12px">Funcionário não encontrado.</div>';
+}
+
+function renderMobileEmployee(){
+ const result=$('#mobileResult');
+ if(!result)return;
+ if(mobileSelectedEmployeeIndex===null || !CONFIG.employees[mobileSelectedEmployeeIndex]){
+   result.hidden=true;
+   return;
+ }
+ const e=CONFIG.employees[mobileSelectedEmployeeIndex], ds=weekDates(mobileWeekStart), today=browserTodayISO();
+ $('#mobileEmployeeName').textContent=e.name;
+ $('#mobileEmployeeMeta').textContent=`${e.role} • ${e.team} • ${ptDate(ds[0],true)} a ${ptDate(ds[4],true)}`;
+ const mobileCurrentBtn=$('#mobileCurrentWeek');
+ if(mobileCurrentBtn){
+   const isCurrent=toISO(mobileWeekStart)===toISO(currentWeekStart());
+   mobileCurrentBtn.disabled=isCurrent;
+   mobileCurrentBtn.textContent=isCurrent?'Semana atual':'Voltar para a semana atual';
+ }
+ $('#mobileWeekGrid').innerHTML=ds.map(d=>{
+   const s=scheduleForEmp(e,d);
+   const label=s.code==='F' ? (s.label||'Feriado') : (s.code==='P'?'Presencial':'Home office');
+   return `<div class="mobile-day ${d===today?'today':''}">
+     <div><div class="dow">${weekday(d)}</div><div class="date">${ptDate(d)}</div></div>
+     <div>${esc(label)}</div>
+     <span class="status ${s.code}">${s.code==='F'?'F':s.code}</span>
+   </div>`;
+ }).join('');
+ result.hidden=false;
+}
+
+
+function generateUpdatedHtml(){
+ let html='<!doctype html>\n'+document.documentElement.outerHTML;
+ const cfg=JSON.stringify(CONFIG);
+ const auth=JSON.stringify(ADMIN_AUTH);
+ html=html.replace(/const DEFAULT_CONFIG=.*?;\nconst DEFAULT_ADMIN_AUTH/s, 'const DEFAULT_CONFIG='+cfg+';\\nconst DEFAULT_ADMIN_AUTH');
+ html=html.replace(/const DEFAULT_ADMIN_AUTH=.*?;\nconst STORAGE_KEY/s, 'const DEFAULT_ADMIN_AUTH='+auth+';\\nconst STORAGE_KEY');
+ return html;
+}
+function downloadUpdatedHtml(messageTarget='#adminMsg'){
+ saveConfig();
+ saveAdminAuth();
+ const html=generateUpdatedHtml();
+ const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+ const a=document.createElement('a');
+ const url=URL.createObjectURL(blob);
+ a.href=url;
+ a.download='index.html';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ const el=$(messageTarget);
+ if(el){
+  el.textContent='Nova versão gerada como index.html. Substitua o arquivo atual no GitHub por este arquivo.';
+  el.className='msg ok';
+ }
+}
+
+function refresh(){renderTeamSelects();renderWeekHeader();renderKPIs();renderGrid();renderToday();renderPersonSelect();renderPerson();renderGroups();renderMobileSuggestions();renderMobileEmployee();if(adminLogged)renderAdmin()}
+
+function openView(v){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
+ document.querySelectorAll('.view').forEach(x=>x.hidden=true);
+ $('#'+v+'View').hidden=false;
+ const pub=v!=='manage';$('#publicTools').hidden=!pub;$('#legend').hidden=!pub;
+ if(v==='manage'){if(adminLogged){$('#loginArea').hidden=true;$('#adminArea').hidden=false;$('#newAdminLogin').value=ADMIN_AUTH.login;renderAdmin()}else{$('#loginArea').hidden=false;$('#adminArea').hidden=true}}
+}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>openView(b.dataset.view)));
+['#search','#team','#dayFilter'].forEach(s=>$(s).addEventListener('input',refresh));
+$('#prevWeek').onclick=()=>{selectedWeekStart=addDays(selectedWeekStart,-7);refresh()};
+$('#nextWeek').onclick=()=>{selectedWeekStart=addDays(selectedWeekStart,7);refresh()};
+$('#currentWeek').onclick=()=>{selectedWeekStart=currentWeekStart();refresh()};
+$('#personSelect').onchange=renderPerson;
+
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();const ok=$('#adminLogin').value===ADMIN_AUTH.login&&$('#adminPass').value===ADMIN_AUTH.password;$('#loginMsg').textContent=ok?'Acesso liberado.':'Login ou senha inválidos.';$('#loginMsg').className='msg '+(ok?'ok':'error');if(ok){adminLogged=true;$('#loginArea').hidden=true;$('#adminArea').hidden=false;$('#newAdminLogin').value=ADMIN_AUTH.login;renderAdmin()}});
+$('#logoutBtn').onclick=()=>{adminLogged=false;$('#adminArea').hidden=true;$('#loginArea').hidden=false;$('#adminPass').value='';$('#loginMsg').textContent=''};
+$('#backPublicBtn').onclick=()=>openView('grid');
+$('#adminSearch').addEventListener('input',renderAdmin);
+$('#clearAdminSearch').onclick=()=>{$('#adminSearch').value='';renderAdmin()};
+
+$('#groupForm').addEventListener('submit',e=>{e.preventDefault();const id=$('#newGroup').value.trim().toUpperCase();if(!id)return;if(CONFIG.groups.some(g=>g.id.toUpperCase()===id))return alert('Esse grupo já existe.');CONFIG.groups.push({id,schedule:Array.from({length:20},(_,i)=>i%5<3?'P':'HO')});$('#newGroup').value='';renderAdmin()});
+$('#employeeForm').addEventListener('submit',e=>{e.preventDefault();const name=$('#empName').value.trim(),role=$('#empRole').value.trim(),team=$('#empTeam').value;if(!name||!role||!team)return;CONFIG.employees.push({name,role,team});e.target.reset();renderAdmin()});
+$('#groupList').addEventListener('click',e=>{const id=e.target.dataset.removeGroup;if(!id)return;const count=CONFIG.employees.filter(x=>x.team===id).length;if(count&&!confirm(`O grupo ${id} possui ${count} funcionário(s). Remover o grupo também removerá esses funcionários. Continuar?`))return;if(!count&&!confirm(`Remover o grupo ${id}?`))return;CONFIG.groups=CONFIG.groups.filter(g=>g.id!==id);CONFIG.employees=CONFIG.employees.filter(x=>x.team!==id);renderAdmin()});
+$('#employeeList').addEventListener('click',e=>{const i=e.target.dataset.removeEmp;if(i===undefined)return;if(confirm(`Remover ${CONFIG.employees[+i].name}?`)){CONFIG.employees.splice(+i,1);renderAdmin()}});
+$('#editScheduleTable').addEventListener('click',e=>{if(!e.target.classList.contains('toggle'))return;const g=CONFIG.groups[+e.target.dataset.gi],i=+e.target.dataset.si;g.schedule[i]=g.schedule[i]==='P'?'HO':'P';renderAdmin()});
+$('#randomBtn').onclick=()=>{if(!confirm('Sortear uma nova escala para todos os grupos? As alterações só serão efetivadas ao clicar em Salvar alterações.'))return;CONFIG.groups.forEach(g=>{let arr=[];for(let w=0;w<4;w++){let days=[0,1,2,3,4].sort(()=>Math.random()-.5).slice(0,3);for(let d=0;d<5;d++)arr.push(days.includes(d)?'P':'HO')}g.schedule=arr});renderAdmin()};
+$('#saveBtn').onclick=()=>{saveConfig();refresh();$('#adminMsg').textContent='Rascunho salvo neste navegador.';$('#adminMsg').className='msg ok'};
+$('#saveVersionBtn').onclick=()=>downloadUpdatedHtml('#adminMsg');
+$('#credentialForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const login=$('#newAdminLogin').value.trim();
+ const pass=$('#newAdminPass').value;
+ const confirmPass=$('#confirmAdminPass').value;
+ const msg=$('#credentialMsg');
+ if(!login){msg.textContent='Informe um login.';msg.className='msg error';return}
+ if(pass && pass.length<4){msg.textContent='A nova senha deve ter pelo menos 4 caracteres.';msg.className='msg error';return}
+ if(pass!==confirmPass){msg.textContent='A confirmação da senha não confere.';msg.className='msg error';return}
+ ADMIN_AUTH={login,password:pass||ADMIN_AUTH.password};
+ saveAdminAuth();
+ $('#newAdminPass').value='';
+ $('#confirmAdminPass').value='';
+ msg.textContent='Login/senha atualizados. Gerando a nova versão...';
+ msg.className='msg ok';
+ downloadUpdatedHtml('#credentialMsg');
+});
+$('#resetBtn').onclick=()=>{if(!confirm('Restaurar a configuração original?'))return;CONFIG=clone(DEFAULT_CONFIG);saveConfig();refresh();renderAdmin();$('#adminMsg').textContent='Configuração original restaurada.';$('#adminMsg').className='msg ok'};
+$('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(CONFIG,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='escala-cco-config.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$('#importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const obj=JSON.parse(await f.text());if(!Array.isArray(obj.groups)||!Array.isArray(obj.employees))throw Error();CONFIG=obj;saveConfig();refresh();renderAdmin();$('#adminMsg').textContent='Configuração importada e salva.';$('#adminMsg').className='msg ok'}catch(err){alert('Arquivo de configuração inválido.')}e.target.value=''});
+
+
+$('#mobileEmployeeSearch').addEventListener('input',renderMobileSuggestions);
+$('#mobilePrevWeek').onclick=()=>{mobileWeekStart=addDays(mobileWeekStart,-7);renderMobileEmployee()};
+$('#mobileNextWeek').onclick=()=>{mobileWeekStart=addDays(mobileWeekStart,7);renderMobileEmployee()};
+$('#mobileCurrentWeek').onclick=()=>{mobileWeekStart=currentWeekStart();renderMobileEmployee()};
+$('#mobileSuggestions').addEventListener('click',e=>{
+ const btn=e.target.closest('[data-mobile-emp]');
+ if(!btn)return;
+ mobileSelectedEmployeeIndex=+btn.dataset.mobileEmp;
+ mobileWeekStart=currentWeekStart();
+ const emp=CONFIG.employees[mobileSelectedEmployeeIndex];
+ $('#mobileEmployeeSearch').value=emp.name;
+ $('#mobileSuggestions').innerHTML='';
+ renderMobileEmployee();
+ window.scrollTo({top:$('#mobileResult').offsetTop-10,behavior:'smooth'});
+});
+
+refresh();
 </script>
 </body>
 </html>
