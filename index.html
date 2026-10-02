@@ -157,7 +157,7 @@ thead th{position:sticky;top:0;z-index:5;background:#f8fafc;font-size:12px;color
     <div class="admin-body" style="line-height:1.6">
      <ol style="margin:0;padding-left:22px;display:grid;gap:12px">
       <li><strong>Status:</strong> P = Presencial, HO = Home Office e F = Feriado. Finais de semana não fazem parte da escala normal.</li>
-      <li><strong>Feriados nacionais:</strong> os feriados configurados não contam como P ou HO, e o ciclo continua considerando apenas os dias úteis.</li>
+      <li><strong>Feriados nacionais:</strong> os feriados configurados não contam como P ou HO. O ciclo segue as semanas do calendário, então o feriado apenas ocupa aquele dia e não desloca os demais.</li>
       <li><strong>Semana automática:</strong> de segunda a sexta, o sistema considera a semana atual. Aos sábados e domingos, passa a considerar a próxima semana de trabalho.</li>
       <li><strong>Navegação:</strong> é possível consultar a semana anterior e a próxima. No celular, use os botões ‹ e › ao lado do funcionário selecionado.</li>
       <li><strong>Consulta pelo celular:</strong> em “Consultar minha escala”, pesquise seu nome para visualizar imediatamente a escala da semana.</li>
@@ -266,17 +266,23 @@ function holidays(y){const x={};const a=(m,d,n)=>x[isoFromParts(y,m,d)]=n;a(1,1,
 const HC=new Map();function holidayName(iso){const y=+iso.slice(0,4);if(!HC.has(y))HC.set(y,holidays(y));return HC.get(y)[iso]||''}
 function isWeekend(iso){const d=parseISO(iso).getUTCDay();return d===0||d===6}
 function isBusinessDay(iso){return !isWeekend(iso)&&!holidayName(iso)}
-function businessDayDistance(a,b){if(a===b)return 0;const f=b>a;let d=parseISO(a),c=0,g=0;while(toISO(d)!==b){d=addDays(d,f?1:-1);if(isBusinessDay(toISO(d)))c+=f?1:-1;if(++g>200000)throw Error('Intervalo excessivo')}return c}
+/* Posição (0-19) no ciclo de 4 semanas.
+   O ciclo avança por SEMANAS DO CALENDÁRIO: feriados não deslocam os demais dias. */
+function cycleIndex(iso){
+  const mon=mondayOf(parseISO(iso));
+  const weeks=Math.round((mon-parseISO(EFFECTIVE_DATE))/(7*MS_DAY));
+  const dow=parseISO(iso).getUTCDay()-1; // seg=0 ... sex=4
+  return (((ANCHOR_PATTERN_INDEX+weeks*5+dow)%20)+20)%20;
+}
 function getGroup(id){return CONFIG.groups.find(g=>g.id===id)}
-function scheduleForGroup(id,iso){if(holidayName(iso))return{code:'F',label:holidayName(iso)};if(isWeekend(iso))return{code:'F',label:'Fim de semana'};const g=getGroup(id);if(!g)return{code:'HO',label:''};const dist=businessDayDistance(EFFECTIVE_DATE,iso),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return{code:g.schedule[idx]||'HO',label:''}}
+function scheduleForGroup(id,iso){if(holidayName(iso))return{code:'F',label:holidayName(iso)};if(isWeekend(iso))return{code:'F',label:'Fim de semana'};const g=getGroup(id);if(!g)return{code:'HO',label:''};const idx=cycleIndex(iso);return{code:g.schedule[idx]||'HO',label:''}}
 function scheduleForEmp(e,iso){
   const base=scheduleForGroup(e.team,iso);
   // Escala fixa individual do Vitor De Oliveira Vieira.
   // Mantém feriados e fins de semana como F.
   if(e.name.trim().toLocaleLowerCase('pt-BR')==='vitor de oliveira vieira'){
     if(base.code==='F')return base;
-    const dist=businessDayDistance(EFFECTIVE_DATE,iso);
-    const idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;
+    const idx=cycleIndex(iso);
     const vitorSchedule=[
       'HO','HO','P','P','P',   // Semana 1: Seg HO, Ter HO, Qua P, Qui P, Sex P
       'P','HO','HO','P','P',   // Semana 2: Seg P, Ter HO, Qua HO, Qui P, Sex P
@@ -293,7 +299,7 @@ function currentWeekStart(){
  return day===6?addDays(today,2):day===0?addDays(today,1):mondayOf(today)
 }
 function weekOffset(){return Math.round((selectedWeekStart-currentWeekStart())/(7*MS_DAY))}
-function cycleWeekIndexFor(start){const mon=toISO(start),dist=businessDayDistance(EFFECTIVE_DATE,mon),idx=((ANCHOR_PATTERN_INDEX+dist)%20+20)%20;return Math.floor(idx/5)}
+function cycleWeekIndexFor(start){return Math.floor(cycleIndex(toISO(start))/5)}
 function groupMonthLabel(ds){const a=parseISO(ds[0]),b=parseISO(ds[4]),fm=d=>new Intl.DateTimeFormat('pt-BR',{month:'long',timeZone:'UTC'}).format(d).toUpperCase(),m1=fm(a),m2=fm(b),y1=a.getUTCFullYear(),y2=b.getUTCFullYear();return m1===m2&&y1===y2?`${m1} ${y1}`:y1===y2?`${m1} / ${m2} ${y1}`:`${m1} ${y1} / ${m2} ${y2}`}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
@@ -391,8 +397,8 @@ function generateUpdatedHtml(){
  let html='<!doctype html>\n'+document.documentElement.outerHTML;
  const cfg=JSON.stringify(CONFIG);
  const auth=JSON.stringify(ADMIN_AUTH);
- html=html.replace(/const DEFAULT_CONFIG=.*?;\nconst DEFAULT_ADMIN_AUTH/s, 'const DEFAULT_CONFIG='+cfg+';\\nconst DEFAULT_ADMIN_AUTH');
- html=html.replace(/const DEFAULT_ADMIN_AUTH=.*?;\nconst STORAGE_KEY/s, 'const DEFAULT_ADMIN_AUTH='+auth+';\\nconst STORAGE_KEY');
+ html=html.replace(/const DEFAULT_CONFIG=.*?;\nconst DEFAULT_ADMIN_AUTH/s, ()=>'const DEFAULT_CONFIG='+cfg+';\nconst DEFAULT_ADMIN_AUTH');
+ html=html.replace(/const DEFAULT_ADMIN_AUTH=.*?;\nconst STORAGE_KEY/s, ()=>'const DEFAULT_ADMIN_AUTH='+auth+';\nconst STORAGE_KEY');
  return html;
 }
 function downloadUpdatedHtml(messageTarget='#adminMsg'){
